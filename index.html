@@ -1,185 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaflet Tutorial</title>
-
-    <!-- leaflet css  -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            width: 100%;
-            height: 100vh;
-        }
-
-        .coordinate {
-            position: absolute;
-            bottom: 10px;
-            right: 50%;
-        }
-
-        .leaflet-popup-content-wrapper {
-            background-color: #000000;
-            color: #fff;
-            border: 1px solid red;
-            border-radius: 0px;
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech|Share+Tech+Mono" rel="stylesheet" />
+    <title>Designs by Laighlin</title>
 </head>
 
-<body>
-    <div id="map">
-        <div class="leaflet-control coordinate"></div>
+<body onload="draw()">
+    <canvas id="bg"></canvas>
+    <main id="content">
+        <h1>
+            <div class="hex moved"></div><span>About the Dev</span></h1>
+        <div class="subtext" id="main">
+            <p>The name's Lin (which is short for Lindeun or Laighlin, depending on where you know me from). I'm a 24-year-old South Asian design student with a tech sort of background and a lot to say about the trends and direction of the contemporary design
+                world.</p>
+            <p>I wanted to be an engineer for most of my life. By the time I changed my mind about that, my liaison with the applied sciences had drastically altered my worldview already. This still informs much of my work and work ethic - design is no less
+                of a science in my eyes than physics or computing. (In other words, I like design as long as I can be a nerd about it.)</p>
+        </div>
+        <h2>
+            <div class="hex"></div><span>Skills</span></h2>
+        <div class="subtext coll">
+            A good grasp of object-oriented programming and computing-related math as a whole. Proficient in CSS3 and HTML5; making significant inroads into JavaScript and JQuery. Adobe Illustrator is both enjoyable for me and putty in my hands. <i>Putty.</i>            In addition to my knowledge of coding, I also speak five human languages and am in the process of learning a few more.
+        </div>
+        <h2>
+            <div class="hex"></div><span>Hobbies & Interests</span></h2>
+        <div class="subtext coll">
+            Small indie coding projects (semi-professionally). Music (unprofessionally). Massively multiplayer online games (clumsily). Cooking (hungrily).
+        </div>
+        <h2>
+            <div class="hex"></div><span>Currently Working On</span></h2>
+        <div class="subtext coll">
+            An accessibility app for Android, a couple of desktop themes for a blogging platform I casually use, and a photography project detailing the interplay of natural and artifical in urban environments.
+        </div>
+        
+        <h2>
+            <div class="hex"></div><span>Find Me</span></h2>
+        <div class="subtext coll">
+            <a>Twitter</a> | <a>Tumblr</a> | <a>Codepen</a> | <a>Behance</a>
+        </div>
+        
+        <h2>
+            <div class="hex"></div><span>Contact Me</span></h2>
+        <div class="subtext coll">
+            <ul>
+                <li>Phone: +12 345 678 90</li>
+                <li>E-mail: <a>lindeun@yahoo.com</a></li>
+                <li>Discord: <a>Laighlin#0371</a></li>
+            </ul>
+        </div>
+    </main>
+    <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="wave" id="one"><path d="M-13.36,88.98 C168.85,182.73 276.72,-73.84 506.31,79.10 L500.00,150.00 L0.00,150.00 Z"></path></svg>
+    <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="wave" id="two"><path d="M-13.36,88.98 C168.85,182.73 276.72,-73.84 506.31,79.10 L500.00,150.00 L0.00,150.00 Z"></path></svg>
+    <div id="hex-holder">
+        <div class="hex" id="uno"></div>
+        <div class="hex" id="dos"></div>
+        <div class="hex" id="tres"></div>
     </div>
 </body>
 
 </html>
-
-<!-- leaflet js  -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="./data/point.js"></script>
-<script src="./data/line.js"></script>
-<script src="./data/polygon.js"></script>
-
-
-<script>
-    // Map initialization 
-    var map = L.map('map').setView([28.3949, 84.1240], 8);
-
-
-
-    /*==============================================
-                TILE LAYER and WMS
-    ================================================*/
-    //osm layer
-    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    osm.addTo(map);
-    // map.addLayer(osm)
-
-    // water color 
-    var watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        subdomains: 'abcd',
-        minZoom: 1,
-        maxZoom: 16,
-        ext: 'jpg'
-    });
-    // watercolor.addTo(map)
-
-    // dark map 
-    var dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
-    });
-    // dark.addTo(map)
-
-    // google street 
-    googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
-    // googleStreets.addTo(map);
-
-    //google satellite
-    googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
-    // googleSat.addTo(map)
-
-    var wms = L.tileLayer.wms("http://localhost:8080/geoserver/wms", {
-        layers: 'geoapp:admin',
-        format: 'image/png',
-        transparent: true,
-        attribution: "wms test"
-    });
-
-
-
-    /*==============================================
-                        MARKER
-    ================================================*/
-    var myIcon = L.icon({
-        iconUrl: 'img/red_marker.png',
-        iconSize: [40, 40],
-    });
-    var singleMarker = L.marker([28.3949, 84.1240], { icon: myIcon, draggable: true });
-    var popup = singleMarker.bindPopup('This is the Nepal. ' + singleMarker.getLatLng()).openPopup()
-    popup.addTo(map);
-
-    var secondMarker = L.marker([29.3949, 83.1240], { icon: myIcon, draggable: true });
-
-    console.log(singleMarker.toGeoJSON())
-
-
-    /*==============================================
-                GEOJSON
-    ================================================*/
-    var pointData = L.geoJSON(pointJson).addTo(map)
-    var lineData = L.geoJSON(lineJson).addTo(map)
-    var polygonData = L.geoJSON(polygonJson, {
-        onEachFeature: function (feature, layer) {
-            layer.bindPopup(`<b>Name: </b>` + feature.properties.name)
-        },
-        style: {
-            fillColor: 'red',
-            fillOpacity: 1,
-            color: '#c0c0c0',
-        }
-    }).addTo(map);
-
-
-
-    /*==============================================
-                    LAYER CONTROL
-    ================================================*/
-    var baseMaps = {
-        "OSM": osm,
-        "Water color map": watercolor,
-        'Dark': dark,
-        'Google Street': googleStreets,
-        "Google Satellite": googleSat,
-    };
-    var overlayMaps = {
-        "First Marker": singleMarker,
-        'Second Marker': secondMarker,
-        'Point Data': pointData,
-        'Line Data': lineData,
-        'Polygon Data': polygonData,
-        'wms': wms
-    };
-    // map.removeLayer(singleMarker)
-
-    L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
-
-
-    /*==============================================
-                    LEAFLET EVENTS
-    ================================================*/
-    map.on('mouseover', function () {
-        console.log('your mouse is over the map')
-    })
-
-    map.on('mousemove', function (e) {
-        document.getElementsByClassName('coordinate')[0].innerHTML = 'lat: ' + e.latlng.lat + 'lng: ' + e.latlng.lng;
-        console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng)
-    })
-
-
-    /*==============================================
-                    STYLE CUSTOMIZATION
-    ================================================*/
-
-
-</script>
